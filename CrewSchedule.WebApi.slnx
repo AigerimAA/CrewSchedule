@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="CrewSchedule.Application/CrewSchedule.Application.csproj" />
+  <Project Path="CrewSchedule.Domain/CrewSchedule.Domain.csproj" />
+  <Project Path="CrewSchedule.Infrastructure/CrewSchedule.Infrastructure.csproj" />
+  <Project Path="CrewSchedule.WebApi/CrewSchedule.WebApi.csproj" />
+</Solution>

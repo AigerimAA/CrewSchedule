@@ -1,0 +1,6 @@
+@CrewSchedule.WebApi_HostAddress = http://localhost:5192
+
+GET {{CrewSchedule.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
