@@ -1,5 +1,7 @@
-﻿using CrewSchedule.Application.Interfaces;
+﻿using CrewSchedule.Application.Exceptions;
+using CrewSchedule.Application.Interfaces;
 using CrewSchedule.Application.Repositories;
+using CrewSchedule.Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System;
@@ -26,7 +28,7 @@ namespace CrewSchedule.Application.Commands
             var assignment = await _repository.GetAsync(request.FlightId, request.CrewMemberId, cancellationToken);
 
             if (assignment is null)
-                throw new Exception("Assignment not found");
+                throw new NotFoundException(nameof(Assignment), $"{request.FlightId}/{request.CrewMemberId}");
 
             assignment.CheckIn(DateTime.UtcNow);
 

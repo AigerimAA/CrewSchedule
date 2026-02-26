@@ -6,7 +6,7 @@ namespace CrewSchedule.Application.Interfaces
 {
     public interface IAssignmentRepository
     {
-        Task<Assignment?> GetAsync(Guid flightId, Guid CrewMemberId, CancellationToken cancellationToken);
+        Task<Assignment?> GetAsync(Guid flightId, Guid crewMemberId, CancellationToken cancellationToken);
 
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
     }

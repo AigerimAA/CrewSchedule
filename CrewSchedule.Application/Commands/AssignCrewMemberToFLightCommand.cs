@@ -37,6 +37,8 @@ namespace CrewSchedule.Application.Commands
             var assignment = new Assignment(request.FlightId, request.CrewMemberId);
 
             _context.Assignments.Add(assignment);
+
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
     

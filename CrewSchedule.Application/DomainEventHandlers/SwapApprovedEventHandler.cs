@@ -6,6 +6,7 @@ using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using CrewSchedule.Application.Exceptions;
 
 //Это реакция на событие (event handler в MediatR), а не обычный command handler
 //Этот класс нужен, чтобы при одобрении свапа автоматически поменять местами экипаж в Assignments
@@ -23,7 +24,6 @@ namespace CrewSchedule.Application.DomainEventHandlers
 
         public async Task Handle(SwapApprovedEvent notification, CancellationToken cancellationToken)
         {
-            //_context.Assignments = DbSet<Assignment> (обращение к таблице Assignments)
             var fromAssignment = await _context.Assignments
                 .FirstOrDefaultAsync(x =>
                     x.FlightId == notification.FlightId &&
@@ -36,13 +36,14 @@ namespace CrewSchedule.Application.DomainEventHandlers
                     x.CrewMemberId == notification.ToCrewMemberId,
                     cancellationToken);
 
-            fromAssignment = new Assignment(
-                notification.FlightId,
-                notification.ToCrewMemberId);
+            if (fromAssignment is null)
+                throw new NotFoundException("Assignment", $"flight {notification.FlightId}, crew {notification.FromCrewMemberId}");
 
-            toAssignment = new Assignment(
-                notification.FlightId,
-                notification.FromCrewMemberId);
+            if (toAssignment is null)
+                throw new NotFoundException("Assignment", $"flight {notification.FlightId}, crew {notification.ToCrewMemberId}");
+
+            fromAssignment.Reassign(notification.ToCrewMemberId);
+            toAssignment.Reassign(notification.FromCrewMemberId);
 
             await _context.SaveChangesAsync(cancellationToken);
         }

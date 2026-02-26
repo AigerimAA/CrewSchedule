@@ -1,5 +1,7 @@
-﻿using CrewSchedule.Application.Interfaces;
+﻿using CrewSchedule.Application.Exceptions;
+using CrewSchedule.Application.Interfaces;
 using CrewSchedule.Application.Repositories;
+using CrewSchedule.Domain.Aggregates;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -26,7 +28,7 @@ namespace CrewSchedule.Application.Commands
             var swap = await _repository.GetAsync(request.SwapId, cancellationToken);
 
             if (swap is null)
-                throw new Exception("Swap not found");
+                throw new NotFoundException(nameof(SwapRequest), request.SwapId);
 
             swap.Approve(request.ApproverId);
 

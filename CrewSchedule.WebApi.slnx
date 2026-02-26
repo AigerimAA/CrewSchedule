@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Элементы решения/">
+    <File Path="README.md" />
+  </Folder>
   <Project Path="CrewSchedule.Application/CrewSchedule.Application.csproj" />
   <Project Path="CrewSchedule.Domain/CrewSchedule.Domain.csproj" />
   <Project Path="CrewSchedule.Infrastructure/CrewSchedule.Infrastructure.csproj" />

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CrewSchedule.Application.Exceptions;
+using System.ComponentModel.DataAnnotations;
 
 namespace CrewSchedule.WebApi.Middleware
 {
@@ -19,6 +20,24 @@ namespace CrewSchedule.WebApi.Middleware
             {
                 await _next(context);
             }
+            catch (NotFoundException ex)
+            {
+                context.Response.StatusCode = 404;
+                await context.Response.WriteAsJsonAsync(new
+                {
+                    Message = ex.Message
+                });
+            }
+
+            catch (ForbiddenAccessException ex)
+            {
+                context.Response.StatusCode = 403;
+                await context.Response.WriteAsJsonAsync(new
+                {
+                    Message = ex.Message
+                });
+            }
+
             catch (FluentValidation.ValidationException ex)
             {
                 context.Response.StatusCode = 400;
@@ -27,6 +46,17 @@ namespace CrewSchedule.WebApi.Middleware
                     Errors = ex.Errors.Select(e => e.ErrorMessage)
                 });
             }
+
+            catch (InvalidOperationException ex)
+            {
+                //Доменные бизнес-ошибки 
+                context.Response.StatusCode = 442;
+                await context.Response.WriteAsJsonAsync(new
+                {
+                    Message = ex.Message
+                });
+            }
+
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Unhandled exception");

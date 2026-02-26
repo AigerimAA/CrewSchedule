@@ -39,5 +39,19 @@ namespace CrewSchedule.Domain.Aggregates
             _flightTimeEntries.Add(new FlightTimeEntry(flightDate, minutes));
 
         }
+
+        public void RemoveMinutes(int minutes, DateTime flightDate)
+        {
+            if (minutes <= 0)
+                throw new ArgumentException("Minutes must be greater than zero.", nameof(minutes));
+
+            var entry = _flightTimeEntries
+                .FirstOrDefault(e => e.FlightDate.Date == flightDate.Date && e.Minutes == minutes);
+
+            if (entry is null)
+                throw new InvalidOperationException($"No flight time entry found for date {flightDate: yyyy-MM-dd} with {minutes} minutes");
+
+            _flightTimeEntries.Remove(entry);
+        }
     }
 }
