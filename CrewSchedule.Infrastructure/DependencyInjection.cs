@@ -18,14 +18,19 @@ namespace CrewSchedule.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IDbConnection>(_ =>
-                    new SqlConnection(
-                        configuration.GetConnectionString("CrewConnection")));
-            services.AddScoped<IFlightReadRepository, FlightReadRepository>();
-
             services.AddDbContext<CrewDbContext>(options =>
                     options.UseSqlServer(
                         configuration.GetConnectionString("CrewConnection")));
+
+            services.AddDbContext<FlightHoursDbContext>(options =>
+                    options.UseSqlServer(
+                        configuration.GetConnectionString("FlightHoursConnection"))); 
+
+            services.AddScoped<IDbConnection>(_ =>
+                    new SqlConnection(
+                        configuration.GetConnectionString("CrewConnection")));
+
+            services.AddScoped<IFlightReadRepository, FlightReadRepository>();
 
             return services;
         }

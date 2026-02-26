@@ -1,5 +1,5 @@
 ﻿using CrewSchedule.Domain.Aggregates;
-using CrewSchedule.Domain.Entity;
+using CrewSchedule.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

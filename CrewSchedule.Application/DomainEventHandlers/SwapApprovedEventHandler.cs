@@ -1,5 +1,5 @@
 ﻿using CrewSchedule.Application.Interfaces;
-using CrewSchedule.Domain.Entity;
+using CrewSchedule.Domain.Entities;
 using CrewSchedule.Domain.Events;
 using Microsoft.EntityFrameworkCore;
 using MediatR;

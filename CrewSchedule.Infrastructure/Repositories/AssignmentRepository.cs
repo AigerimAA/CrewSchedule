@@ -1,6 +1,6 @@
 ﻿using CrewSchedule.Application.Interfaces;
 using CrewSchedule.Application.Repositories;
-using CrewSchedule.Domain.Entity;
+using CrewSchedule.Domain.Entities;
 using CrewSchedule.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System;

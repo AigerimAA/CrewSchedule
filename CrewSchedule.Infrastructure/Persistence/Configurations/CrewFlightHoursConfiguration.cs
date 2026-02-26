@@ -13,7 +13,12 @@ namespace CrewSchedule.Infrastructure.Persistence.Configurations
         {
             builder.HasKey(x => x.CrewMemberId);
 
-            builder.Property(x => x.TotalMinutes).IsRequired();
+            builder.OwnsMany(x => x.FlightTimeEntries, entry =>
+            {
+                entry.WithOwner().HasForeignKey("CrewFlightHoursId");
+                entry.Property(e => e.FlightDate).IsRequired();
+                entry.Property(e => e.Minutes).IsRequired();
+            });
         }
     }
 }

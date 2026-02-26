@@ -3,19 +3,18 @@ using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using CrewSchedule.Domain.Entity;
+using CrewSchedule.Domain.Entities;
 using CrewSchedule.Domain.Common;
 using CrewSchedule.Domain.Events;
 using CrewSchedule.Application.Interfaces;
 using CrewSchedule.Domain.Aggregates;
-using CrewSchedule.Application.Interfaces;
 
 namespace CrewSchedule.Infrastructure.Persistence
 {
     public class CrewDbContext : DbContext, ICrewDbContext
     {
-        private readonly IMediator _mediator;
-        public CrewDbContext(DbContextOptions<CrewDbContext> options, IMediator mediator)
+        private readonly IMediator? _mediator;
+        public CrewDbContext(DbContextOptions<CrewDbContext> options, IMediator? mediator)
             :base(options)
         {
             _mediator = mediator;
@@ -25,10 +24,6 @@ namespace CrewSchedule.Infrastructure.Persistence
         public DbSet<CrewMember> CrewMembers => Set<CrewMember>();
         public DbSet<Assignment> Assignments => Set<Assignment>();
         public DbSet<SwapRequest> SwapRequests => Set<SwapRequest>();
-
-        public CrewDbContext(DbContextOptions<CrewDbContext> options) : base(options) { }
-
-        public CrewDbContext() { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -55,9 +50,12 @@ namespace CrewSchedule.Infrastructure.Persistence
 
             var result = await base.SaveChangesAsync(cancellationToken);
 
-            foreach (var domainEvent in domainEvents)
+            if (_mediator is not null)
             {
-                await _mediator.Publish(domainEvent, cancellationToken);
+                foreach (var domainEvent in domainEvents)
+                {
+                    await _mediator.Publish(domainEvent, cancellationToken);
+                }
             }
 
             foreach (var entity in ChangeTracker.Entries<BaseEntity>())

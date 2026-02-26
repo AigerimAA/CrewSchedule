@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CrewSchedule.Domain.Entity
+namespace CrewSchedule.Domain.Entities
 {
     public class Assignment : BaseEntity
     {
@@ -52,7 +52,7 @@ namespace CrewSchedule.Domain.Entity
                 throw new InvalidOperationException("Already checked out");
 
             if (checkoutTimeUtc < CheckInTimeUtc.Value)
-                throw new InvalidOperationException("Checkout time invallid");
+                throw new InvalidOperationException("Checkout time invalid");
             
             CheckOutTimeUtc = checkoutTimeUtc;
         }

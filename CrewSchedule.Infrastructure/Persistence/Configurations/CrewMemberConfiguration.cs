@@ -1,4 +1,4 @@
-﻿using CrewSchedule.Domain.Entity;
+﻿using CrewSchedule.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -17,7 +17,7 @@ namespace CrewSchedule.Infrastructure.Persistence.Configurations
                 .IsRequired()
                 .HasMaxLength(200);
 
-            builder.Property(x => x.Position)
+            builder.Property(x => x.Role)
                 .IsRequired()
                 .HasMaxLength(50);
         }

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
-namespace CrewSchedule.Domain.Entity
+namespace CrewSchedule.Domain.Entities
 {
     public class Flight
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; private set; }
         public string FlightNumber { get; private set; }
         public string DepartureAirport { get; private set; }
         public string ArrivalAirport { get; private set; }

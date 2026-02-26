@@ -16,7 +16,7 @@ namespace CrewSchedule.Infrastructure.Persistence
 
             optionsBuilder.UseSqlServer(connectionString);
 
-            return new CrewDbContext(optionsBuilder.Options);
+            return new CrewDbContext(optionsBuilder.Options, mediator: null);
         }
     }
 }

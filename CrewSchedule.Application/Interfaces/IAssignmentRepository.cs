@@ -1,6 +1,6 @@
 ﻿using CrewSchedule.Application.Queries;
 using CrewSchedule.Domain.Aggregates;
-using CrewSchedule.Domain.Entity;
+using CrewSchedule.Domain.Entities;
 
 namespace CrewSchedule.Application.Interfaces
 {

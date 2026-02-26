@@ -1,6 +1,6 @@
 ﻿using CrewSchedule.Application.DTO;
 using CrewSchedule.Application.Interfaces;
-using CrewSchedule.Domain.Entity;
+using CrewSchedule.Domain.Entities;
 using CrewSchedule.Domain.Policies;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -52,11 +52,10 @@ namespace CrewSchedule.Application.Commands
                 var assignment = new Assignment(request.FlightId, crewMember.CrewMemberId);
 
                 _context.Assignments.Add(assignment);
-
-                await _context.SaveChangesAsync(cancellationToken);
-
-                _logger.LogInformation("Crew assigned successfully to flight {FlightId}", request.FlightId);
             }
+            await _context.SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation("Successfully assigned {Count} crew members to flight {FlightId}", request.Crew.Count, request.FlightId);
         }
     }
     

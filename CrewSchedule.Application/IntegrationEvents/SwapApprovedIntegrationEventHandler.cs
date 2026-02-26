@@ -22,8 +22,7 @@ namespace CrewSchedule.Application.IntegrationEvents
 
             var to = await _context.CrewFlightHours.FirstAsync(x => x.CrewMemberId == notification.ToCrewMemberId, cancellationToken);
 
-            from.RemoveMinutes(notification.FlightDurationMinutes);
-            to.AddMinutes(notification.FlightDurationMinutes);
+            to.AddMinutes(notification.FlightDurationMinutes, notification.FlightDate);
 
             await _context.SaveChangesAsync(cancellationToken);
         }

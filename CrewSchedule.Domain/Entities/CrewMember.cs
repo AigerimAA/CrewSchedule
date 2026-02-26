@@ -1,21 +1,32 @@
-﻿using System;
+﻿using CrewSchedule.Domain.Common;
+using CrewSchedule.Domain.Enums;
+using CrewSchedule.Domain.Events;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CrewSchedule.Domain.Entity
+namespace CrewSchedule.Domain.Entities
 {
-    public class CrewMember
+    public class CrewMember : BaseEntity
     {
         public Guid Id { get; private set; }
         public string FullName { get; private set; }
-        public string Position { get; private set; }
+        public CrewRole Role { get; private set; }
 
         private CrewMember() { }
-        public CrewMember(Guid id, string fullName, string position)
+        public CrewMember(string fullName, CrewRole role)
         {
-            Id = id;
+            if (string.IsNullOrWhiteSpace(fullName))
+                throw new ArgumentException("Full name cannot be empty.", nameof(fullName));
+
+            Id = Guid.NewGuid();
             FullName = fullName;
-            Position = position;
+            Role = role;
+        }
+
+        public void CheckInForFlight(Guid flightId)
+        {
+            AddDomainEvent(new CrewCheckedInEvent(flightId, this.Id, DateTime.UtcNow));
         }
     }
 }
