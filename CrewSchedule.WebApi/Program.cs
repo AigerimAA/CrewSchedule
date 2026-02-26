@@ -11,7 +11,7 @@ using FluentValidation;
 using CrewSchedule.Domain.Policies;
 using CrewSchedule.Application.Commands;
 
-public partial class Program
+public class Program
 {
     private static void Main(string[] args)
     {
@@ -20,14 +20,6 @@ public partial class Program
         builder.Host.UseSerilog((ctx, services, cfg) => cfg
             .WriteTo.Console()
             .WriteTo.File("logs/crew-log.txt", rollingInterval: RollingInterval.Day));
-
-     
-        builder.Services.AddDbContext<CrewDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("CrewConnection")));
-
-        builder.Services.AddDbContext<FlightHoursDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("FlightHoursConnection")));
-
         
         builder.Services.AddInfrastructure(builder.Configuration);
 
@@ -46,6 +38,8 @@ public partial class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+        builder.Services.AddControllers();
+
         var app = builder.Build();
 
         app.UseMiddleware<ExceptionMiddleware>();
@@ -53,14 +47,7 @@ public partial class Program
         app.UseSwagger();
         app.UseSwaggerUI();
 
-        app.MapPost("/flights/assign",
-            async (AssignFullCrewToFlightCommand command,
-                    IMediator mediator) =>
-            {
-                await mediator.Send(command);
-                return Results.Ok();
-            })
-            .WithName("AssignCrewToFlight");
+        app.MapControllers();
 
         app.Run();
     }
