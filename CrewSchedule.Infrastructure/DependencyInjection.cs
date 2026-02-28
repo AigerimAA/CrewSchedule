@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Data.SqlClient;
 using CrewSchedule.Application.Interfaces;
 using CrewSchedule.Infrastructure.Persistence;
+using CrewSchedule.Infrastructure.Services;
 
 namespace CrewSchedule.Infrastructure
 {
@@ -33,6 +34,9 @@ namespace CrewSchedule.Infrastructure
             services.AddScoped<IFlightReadRepository, FlightReadRepository>();
 
             services.AddScoped<ISwapReadRepository, SwapReadRepository>();
+
+            services.AddHttpContextAccessor();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             return services;
         }
