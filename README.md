@@ -17,6 +17,8 @@ CrewSchedule.Infrastructure  # EF Core, Dapper, repositories, DB configurations
 CrewSchedule.WebApi          # REST API, controllers, middleware
 ```
 
+Two separate databases are used intentionally: CrewScheduleDb for the core scheduling domain (flights, assignments, swap requests) and FlightHoursDb for flight hour tracking. This reflects a conscious separation of domain boundaries — each context owns its data and can evolve independently.
+
 ### Layer dependencies
 ```
 WebApi → Application → Domain
