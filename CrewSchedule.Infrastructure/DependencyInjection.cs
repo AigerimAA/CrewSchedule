@@ -37,6 +37,7 @@ namespace CrewSchedule.Infrastructure
 
             services.AddHttpContextAccessor();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<ITokenService, TokenService>();
 
             return services;
         }
