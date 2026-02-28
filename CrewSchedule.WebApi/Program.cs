@@ -9,6 +9,7 @@ using CrewSchedule.WebApi.Middleware;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using FluentValidation;
 using CrewSchedule.Domain.Policies;
+using CrewSchedule.Application;
 using CrewSchedule.Application.Commands;
 
 public class Program
@@ -20,17 +21,9 @@ public class Program
         builder.Host.UseSerilog((ctx, services, cfg) => cfg
             .WriteTo.Console()
             .WriteTo.File("logs/crew-log.txt", rollingInterval: RollingInterval.Day));
-        
+
+        builder.Services.AddApplication();
         builder.Services.AddInfrastructure(builder.Configuration);
-
-        builder.Services.AddMediatR(cfg =>
-            cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
-
-        builder.Services.AddAutoMapper(typeof(Program).Assembly);
-
-        builder.Services.AddValidatorsFromAssemblyContaining<Program>();
-        
-        builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         builder.Services.AddScoped<IRestPolicy, StandardRestPolicy>();
         builder.Services.AddScoped<ICrewCompositionPolicy, StandardCrewCompositionPolicy>();
@@ -43,7 +36,6 @@ public class Program
         var app = builder.Build();
 
         app.UseMiddleware<ExceptionMiddleware>();
-
         app.UseSwagger();
         app.UseSwaggerUI();
 

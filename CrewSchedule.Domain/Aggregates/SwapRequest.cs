@@ -43,10 +43,10 @@ namespace CrewSchedule.Domain.Aggregates
         public void Approve(Guid approverId)
         {
             if (Status != SwapStatus.Pending)
-                throw new InvalidOperationException("Swap already processed");
+                throw new DomainException("Swap already processed");
             
             if (approverId != ToCrewMemberId)
-                throw new InvalidOperationException("Only target crew member can approve");
+                throw new DomainException("Only target crew member can approve");
 
             Status = SwapStatus.Approved;
 
@@ -56,10 +56,10 @@ namespace CrewSchedule.Domain.Aggregates
         public void Reject(Guid approverId)
         {
             if (Status != SwapStatus.Pending)
-                throw new InvalidOperationException("Swap already processed");
+                throw new DomainException("Swap already processed");
 
             if (approverId != ToCrewMemberId)
-                throw new InvalidOperationException("Only target crew member can reject");
+                throw new DomainException("Only target crew member can reject");
 
             Status = SwapStatus.Rejected;
         }
@@ -67,10 +67,10 @@ namespace CrewSchedule.Domain.Aggregates
         public void Cancel(Guid requesterId)
         {
             if (Status != SwapStatus.Pending)
-                throw new InvalidOperationException("Swap already processed");
+                throw new DomainException("Swap already processed");
 
             if (requesterId != FromCrewMemberId)
-                throw new InvalidOperationException("Only requester can cancel");
+                throw new DomainException("Only requester can cancel");
 
             Status = SwapStatus.Cancelled;
 
