@@ -11,7 +11,13 @@ namespace CrewSchedule.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Assignment> builder)
         {
-            builder.HasKey(x => new { x.FlightId, x.CrewMemberId });
+            builder.HasKey(x => x.Id);
+
+            builder.Property(x => x.FlightId)
+                .IsRequired();
+
+            builder.Property(x => x.CrewMemberId)
+                .IsRequired();
 
             builder.Property(x => x.CheckInTimeUtc);
             builder.Property(x => x.CheckOutTimeUtc);
@@ -24,6 +30,7 @@ namespace CrewSchedule.Infrastructure.Persistence.Configurations
                 .WithMany()
                 .HasForeignKey(x => x.CrewMemberId);
 
+            builder.HasIndex(x => new { x.FlightId, x.CrewMemberId }).IsUnique();
         }
     }
 }

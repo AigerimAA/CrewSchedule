@@ -12,5 +12,6 @@ namespace CrewSchedule.Application.DTO
         public Guid ToCrewMemberId { get; set; }
         public Guid FlightId { get; set; }
         public SwapStatus Status { get; set; }
+        public DateTime CreatedAtUtc { get; set; }
     }
 }

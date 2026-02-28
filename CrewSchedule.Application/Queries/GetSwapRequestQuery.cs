@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using CrewSchedule.Application.Exceptions;
+using CrewSchedule.Domain.Aggregates;
 
 namespace CrewSchedule.Application.Queries
 {
@@ -14,22 +16,21 @@ namespace CrewSchedule.Application.Queries
     
     public class GetSwapRequestHandler : IRequestHandler<GetSwapRequestQuery, SwapRequestDto>
     {
-        private readonly ICrewDbContext _context;
-        private readonly IMapper _mapper;
+        private readonly ISwapReadRepository _repository;
 
-        public GetSwapRequestHandler(ICrewDbContext context, IMapper mapper)
+        public GetSwapRequestHandler(ISwapReadRepository repository)
         {
-            _context = context;
-            _mapper = mapper;
+            _repository = repository;
         }
 
         public async Task<SwapRequestDto> Handle(GetSwapRequestQuery request, CancellationToken cancellationToken)
         {
-            var entity = await _context.SwapRequests
-                .AsNoTracking()
-                .FirstAsync(x => x.Id == request.Id, cancellationToken);
+            var dto = await _repository.GetByIdAsync(request.Id, cancellationToken);
 
-            return _mapper.Map<SwapRequestDto>(entity);
+            if (dto is null)
+                throw new NotFoundException(nameof(SwapRequest), request.Id);
+
+            return dto;
         }
     }
 

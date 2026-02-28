@@ -32,6 +32,8 @@ namespace CrewSchedule.Infrastructure
 
             services.AddScoped<IFlightReadRepository, FlightReadRepository>();
 
+            services.AddScoped<ISwapReadRepository, SwapReadRepository>();
+
             return services;
         }
     }
