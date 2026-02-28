@@ -1,6 +1,7 @@
 ﻿using CrewSchedule.Domain.Common;
 using CrewSchedule.Domain.Enums;
 using CrewSchedule.Domain.Events;
+using CrewSchedule.Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,8 +21,17 @@ namespace CrewSchedule.Domain.Aggregates
 
         public SwapRequest(Guid fromCrewMemberId, Guid toCrewMemberId, Guid flightId)
         {
+            if (fromCrewMemberId == Guid.Empty)
+                throw new DomainException("'From crew member Id' cannot be empty");
+
+            if (toCrewMemberId == Guid.Empty)
+                throw new DomainException("'To crew member Id' cannot be empty");
+
+            if (flightId == Guid.Empty)
+                throw new DomainException("Flight Id cannot be empty");
+
             if (fromCrewMemberId == toCrewMemberId)
-                throw new InvalidOperationException("Cannot swap with yourself");
+                throw new DomainException("Cannot swap with yourself");
 
             Id = Guid.NewGuid();
             FromCrewMemberId = fromCrewMemberId;

@@ -1,4 +1,5 @@
 ﻿using CrewSchedule.Domain.Common;
+using CrewSchedule.Domain.Exceptions;
 using CrewSchedule.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ namespace CrewSchedule.Domain.Aggregates
         public void AddMinutes(int minutes, DateTime flightDate)
         {
             if (minutes <= 0)
-                throw new InvalidOperationException("Invalid minutes");
+                throw new DomainException("Invalid minutes");
 
             var oneYearAgo = flightDate.AddYears(-1);
             _flightTimeEntries.RemoveAll(e => e.FlightDate < oneYearAgo);
@@ -34,7 +35,7 @@ namespace CrewSchedule.Domain.Aggregates
             var currentTotal = _flightTimeEntries.Sum(e => e.Minutes);
 
             if (currentTotal + minutes > MaxAnnualFlightMinutes)
-                throw new InvalidOperationException($"Annual limit of {MaxAnnualFlightMinutes / 60} hours exceeded for the last 12 months");
+                throw new DomainException($"Annual limit of {MaxAnnualFlightMinutes / 60} hours exceeded for the last 12 months");
 
             _flightTimeEntries.Add(new FlightTimeEntry(flightDate, minutes));
 
@@ -43,13 +44,13 @@ namespace CrewSchedule.Domain.Aggregates
         public void RemoveMinutes(int minutes, DateTime flightDate)
         {
             if (minutes <= 0)
-                throw new ArgumentException("Minutes must be greater than zero.", nameof(minutes));
+                throw new DomainException("Minutes must be greater than zero.");
 
             var entry = _flightTimeEntries
                 .FirstOrDefault(e => e.FlightDate.Date == flightDate.Date && e.Minutes == minutes);
 
             if (entry is null)
-                throw new InvalidOperationException($"No flight time entry found for date {flightDate: yyyy-MM-dd} with {minutes} minutes");
+                throw new DomainException($"No flight time entry found for date {flightDate: yyyy-MM-dd} with {minutes} minutes");
 
             _flightTimeEntries.Remove(entry);
         }

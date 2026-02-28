@@ -1,4 +1,5 @@
 ﻿using CrewSchedule.Application.Exceptions;
+using CrewSchedule.Domain.Exceptions;
 using System.ComponentModel.DataAnnotations;
 
 namespace CrewSchedule.WebApi.Middleware
@@ -47,14 +48,11 @@ namespace CrewSchedule.WebApi.Middleware
                 });
             }
 
-            catch (InvalidOperationException ex)
+            catch (DomainException ex)
             {
-                //Доменные бизнес-ошибки 
-                context.Response.StatusCode = 442;
-                await context.Response.WriteAsJsonAsync(new
-                {
-                    Message = ex.Message
-                });
+                //422 - нарушение бизнес-правил домена
+                context.Response.StatusCode = 422;
+                await context.Response.WriteAsJsonAsync(new { Message = ex.Message });
             }
 
             catch (Exception ex)
