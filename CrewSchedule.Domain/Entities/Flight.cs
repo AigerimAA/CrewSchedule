@@ -1,11 +1,12 @@
-﻿using System;
+﻿using CrewSchedule.Domain.Common;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
 namespace CrewSchedule.Domain.Entities
 {
-    public class Flight
+    public class Flight : BaseEntity
     {
         public Guid Id { get; private set; }
         public string FlightNumber { get; private set; }

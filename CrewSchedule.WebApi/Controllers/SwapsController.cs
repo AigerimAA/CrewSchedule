@@ -43,7 +43,7 @@ namespace CrewSchedule.WebApi.Controllers
         [HttpPost("{id:guid}/approve")]
         public async Task<IActionResult> Approve(Guid id, [FromBody] Guid approverId)
         {
-            await _mediator.Send(new ApproveSwapCommand(id, approverId));
+            await _mediator.Send(new ApproveSwapCommand(id));
             return NoContent();
         }
 

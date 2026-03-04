@@ -14,8 +14,10 @@ namespace CrewSchedule.Domain.Aggregates
 
         private readonly List<FlightTimeEntry> _flightTimeEntries = new();
         public IReadOnlyCollection<FlightTimeEntry> FlightTimeEntries => _flightTimeEntries.AsReadOnly();
-        
-        //Годовой налет члена экипажа не должен превышать 900 часов в год (скользящий год)
+
+        /// <summary>
+        ///Годовой налет члена экипажа не должен превышать 900 часов в год (скользящий год)
+        /// </summary>
         private const int MaxAnnualFlightMinutes = 900 * 60;
 
         private CrewFlightHours() { }
