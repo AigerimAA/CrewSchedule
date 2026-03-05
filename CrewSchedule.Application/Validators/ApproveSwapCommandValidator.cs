@@ -12,9 +12,6 @@ namespace CrewSchedule.Application.Validators
         {
             RuleFor(x => x.SwapId)
                 .NotEmpty().WithMessage("SwapId is required");
-
-            RuleFor(x => x.ApproverId)
-                .NotEmpty().WithMessage("ApproverId is required");
         }
     }
 }
